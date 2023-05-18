@@ -10,6 +10,18 @@ export default [
     icon: 'home',
     component: '@/pages/Home',
   },
+  {
+    path: '/customers',
+    name: 'customers',
+    icon: 'user',
+    component: '@/pages/Customers'
+  },
+  {
+    path: '/opportunities',
+    name: 'opportunities',
+    icon: 'AccountBook',
+    component: '@/pages/Opportunities',
+  },
 ];
 
 
