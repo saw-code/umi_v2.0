@@ -3,17 +3,20 @@ import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { FormattedMessage, getLocale } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
+import columns from './columns';
+import { Opportunity } from '@/types/opportunity';
 
 export default function Page() {
   return (
     <PageContainer style={{ minHeight: '90vh' }}>
-      <ProTable<any>
+      <ProTable<Opportunity>
         rowKey="id"
-        headerTitle={<FormattedMessage id="table.opportunity.title"/>}
+        headerTitle={<FormattedMessage id="table.opportunity.title" />}
         search={{ labelWidth: 'auto' }}
         pagination={{ pageSize: 5 }}
         dateFormatter="string"
         locale={getLocale()}
+        columns={columns}
         toolBarRender={() => [
           <Button key="button" icon={<PlusOutlined />} type="primary">
             <FormattedMessage id="table.new" />

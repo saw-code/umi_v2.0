@@ -14,7 +14,7 @@ export default [
     path: '/customers',
     name: 'customers',
     icon: 'user',
-    component: '@/pages/Customers'
+    component: '@/pages/Customers',
   },
   {
     path: '/opportunities',
@@ -28,9 +28,11 @@ export default [
     icon: 'BarChartOutlined',
     component: '@/pages/Reports',
   },
+  {
+    path: '/opportunity/:id',
+    component: '@/pages/OpportunityDetail',
+  },
 ];
-
-
 
 // export default [
 //   {
@@ -47,7 +49,6 @@ export default [
 //     ]
 //   },
 // ];
-
 
 // Этот код определяет корневой путь ('/') для отображения компонента индекс, расположенного в
 // папке pages. Если мы указываем на файл в src каталоге, мы можем использовать @
