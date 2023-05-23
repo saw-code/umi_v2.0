@@ -1,4 +1,6 @@
+// @ts-ignore
 import * as faker from 'faker';
+// @ts-ignore
 import { Response } from 'express';
 import { Customer } from '@/types/customer.d';
 

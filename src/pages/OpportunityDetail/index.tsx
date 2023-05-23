@@ -1,5 +1,7 @@
 import { Opportunity } from '@/types/opportunity';
-import ProDescriptions from '@ant-design/pro-descriptions';
+import ProDescriptions, {
+  ProDescriptionsItemProps,
+} from '@ant-design/pro-descriptions';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Breadcrumb, Button, Card, Steps, Tag } from 'antd';
@@ -8,9 +10,20 @@ import columns from '../Opportunities/columns';
 import { PlusOutlined } from '@ant-design/icons';
 import { Activity } from '@/types/opportunity';
 import activityColumns from './columns';
+import { useEffect, useState } from 'react';
+import { getOpportunity, listActivities } from '@/services/opportunity';
 
 export default function Page() {
   const { id } = useParams<{ id: string }>();
+  const [opportunity, setOpportunity] = useState<Opportunity>();
+
+  useEffect(() => {
+    const fetchOpportunity = async () => {
+      setOpportunity(await getOpportunity({ opportunityId: id }));
+    };
+    fetchOpportunity();
+  }, []);
+
   return (
     <PageContainer
       header={{
@@ -35,7 +48,7 @@ export default function Page() {
       ]}
     >
       <Card bordered>
-        <Steps current={0}>
+        <Steps current={opportunity?.status}>
           <Steps.Step
             key="quality"
             description={<Tag color="#e379f2" key={0} />}
@@ -61,8 +74,8 @@ export default function Page() {
 
         <ProDescriptions<Opportunity>
           title={<FormattedMessage id="table.opportunity.detail" />}
-          columns={columns}
-          dataSource={[]}
+          columns={columns as ProDescriptionsItemProps<Opportunity>[]}
+          dataSource={opportunity}
         />
       </Card>
       <Card bordered>
@@ -74,7 +87,7 @@ export default function Page() {
           pagination={{ pageSize: 5 }}
           columns={activityColumns}
           params={{ customerId: id }}
-          request={() => {}}
+          request={listActivities}
         />
       </Card>
     </PageContainer>

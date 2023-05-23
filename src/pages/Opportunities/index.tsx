@@ -5,6 +5,7 @@ import { FormattedMessage, getLocale } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import columns from './columns';
 import { Opportunity } from '@/types/opportunity';
+import { listOpportunities } from '@/services/opportunity';
 
 export default function Page() {
   return (
@@ -17,6 +18,7 @@ export default function Page() {
         dateFormatter="string"
         locale={getLocale()}
         columns={columns}
+        request={listOpportunities}
         toolBarRender={() => [
           <Button key="button" icon={<PlusOutlined />} type="primary">
             <FormattedMessage id="table.new" />
