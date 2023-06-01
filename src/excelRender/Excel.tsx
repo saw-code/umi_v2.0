@@ -5,6 +5,7 @@ import * as XLSX from 'xlsx';
 import styles from './index.less';
 import Icon from '@ant-design/icons';
 import Table from '@ant-design/pro-table/es/Table';
+import moment from 'moment';
 
 function Excel() {
   const [data, setData] = useState([]);
@@ -35,53 +36,48 @@ function Excel() {
             //break; // Если берется только первая таблица, раскомментировать эту строку
           }
         }
+
         // Окончательно полученные и отформатированные данные json
         message.success('Успешная загрузка!');
+        console.log(data);
       } catch (e) {
         // Соответствующие запросы о неправильном типе ошибки файла могут быть брошены сюда
         message.error('Неверный тип файла!');
       }
     };
-    // Открыть файл в двоичном режиме
-    fileReader.readAsBinaryString(files[0]);
-  };
-  console.log(data);
 
+    const selectedFile = files[0];
+    if (selectedFile instanceof Blob) {
+      // Добавляем проверку на тип Blob
+      // Открыть файл в двоичном режиме
+      fileReader.readAsBinaryString(selectedFile);
+    } else {
+      console.log('Ошибка: параметр не является объектом Blob!');
+    }
+  };
+
+  const correctDate = (text: number) =>
+    moment((text - 25569) * 86400 * 1000)
+      .utcOffset(0)
+      .format('DD.MM.YYYY HH:mm:ss');
+
+  // @ts-ignore
   const columns = [
     {
-      title: 'Выпуск разрешен',
-      dataIndex: 'Выпуск разрешен',
-      key: 'Выпуск разрешен',
-    },
-    {
-      title: 'Дата ДО-1',
-      dataIndex: 'Дата ДО-1',
-      key: 'Дата ДО-1',
-    },
-    {
-      title: 'Дата закрытия транзита',
-      dataIndex: 'Дата закрытия транзита',
-      key: 'Дата закрытия транзита',
-    },
-    {
-      title: 'Дата помещения на СВХ',
-      dataIndex: 'Дата помещения на СВХ',
-      key: 'Дата помещения на СВХ',
+      title: 'Номер',
+      dataIndex: 'Номер',
+      key: 'Номер',
     },
     {
       title: 'Дата прибытия',
       dataIndex: 'Дата прибытия',
       key: 'Дата прибытия',
+      render: correctDate,
     },
     {
-      title: 'Заявка на досмотр',
-      dataIndex: 'Заявка на досмотр',
-      key: 'Заявка на досмотр',
-    },
-    {
-      title: 'Номер',
-      dataIndex: 'Номер',
-      key: 'Номер',
+      title: 'Тип прибытия',
+      dataIndex: 'Тип прибытия',
+      key: 'Тип прибытия',
     },
     {
       title: 'Номер вагона',
@@ -89,9 +85,43 @@ function Excel() {
       key: 'Номер вагона',
     },
     {
-      title: 'ПТД',
-      dataIndex: 'ПТД',
-      key: 'ПТД',
+      title: 'Дата закрытия транзита',
+      dataIndex: 'Дата закрытия транзита',
+      key: 'Дата закрытия транзита',
+      render: correctDate,
+    },
+    {
+      title: 'Дата помещения на СВХ',
+      dataIndex: 'Дата помещения на СВХ',
+      key: 'Дата помещения на СВХ',
+      render: correctDate,
+    },
+    {
+      title: 'Дата ДО-1',
+      dataIndex: 'Дата ДО-1',
+      key: 'Дата ДО-1',
+      render: correctDate,
+    },
+    {
+      title: 'Суммарный вес товара по ЖДН',
+      dataIndex: 'Суммарный вес товара по ЖДН',
+      key: 'Суммарный вес товара по ЖДН',
+    },
+    {
+      title: 'Суммарный вес товара по ДО-1',
+      dataIndex: 'Суммарный вес товара по ДО-1',
+      key: 'Суммарный вес товара по ДО-1',
+    },
+    {
+      title: 'Выпуск разрешен',
+      dataIndex: 'Выпуск разрешен',
+      key: 'Выпуск разрешен',
+    },
+    {
+      title: 'Дата вывоза контейнера из СВХ',
+      dataIndex: 'Дата вывоза контейнера из СВХ',
+      key: 'Дата вывоза контейнера из СВХ',
+      render: correctDate,
     },
     {
       title: 'Поезд',
@@ -104,19 +134,9 @@ function Excel() {
       key: 'Станция отправления',
     },
     {
-      title: 'Суммарный вес товара по ЖДН',
-      dataIndex: 'Суммарный вес товара по ЖДН',
-      key: 'Суммарный вес товара по ЖДН',
-    },
-    {
-      title: 'Таможенная тара',
-      dataIndex: 'Таможенная тара',
-      key: 'Таможенная тара',
-    },
-    {
-      title: 'Тип прибытия',
-      dataIndex: 'Тип прибытия',
-      key: 'Тип прибытия',
+      title: 'Экспедитор',
+      dataIndex: 'Экспедитор',
+      key: 'Экспедитор',
     },
     {
       title: 'Транзит закрыт',
@@ -129,9 +149,29 @@ function Excel() {
       key: 'Фит-Вет Документы',
     },
     {
-      title: 'Экспедитор',
-      dataIndex: 'Экспедитор',
-      key: 'Экспедитор',
+      title: 'Таможенная тара',
+      dataIndex: 'Таможенная тара',
+      key: 'Таможенная тара',
+    },
+    {
+      title: 'ПТД',
+      dataIndex: 'ПТД',
+      key: 'ПТД',
+    },
+    {
+      title: 'Дата подачи ДТ',
+      dataIndex: 'Дата подачи ДТ',
+      key: 'Дата подачи ДТ',
+    },
+    {
+      title: 'Заявка на досмотр',
+      dataIndex: 'Заявка на досмотр',
+      key: 'Заявка на досмотр',
+    },
+    {
+      title: 'Номер ДТ',
+      dataIndex: 'Номер ДТ',
+      key: 'Номер ДТ',
     },
   ];
 
@@ -140,7 +180,7 @@ function Excel() {
     (acc, column) => acc + (column.width || 150),
     0,
   );
-
+  debugger;
   return (
     <div style={{ marginTop: 100 }}>
       <Button className={styles['upload-wrap']}>
