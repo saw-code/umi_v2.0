@@ -5,6 +5,7 @@ import { Avatar } from 'antd';
 import { ProTable } from '@ant-design/pro-table';
 import { FormattedMessage } from 'umi';
 import { Opportunity } from '@/types/opportunity';
+import Excel from '@/excelRender/Excel';
 
 export default function IndexPage() {
   return (
@@ -39,12 +40,7 @@ export default function IndexPage() {
       }
     >
       <div style={{ width: '100%' }}>
-        <ProTable<Opportunity>
-          headerTitle={<FormattedMessage id="home.recents" />}
-          pagination={{ pageSize: 5 }}
-          rowKey="id"
-          search={false}
-        />
+        <Excel />
       </div>
     </PageContainer>
   );
